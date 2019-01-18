@@ -1,0 +1,31 @@
+package com.river.leader.core.interceptor;
+
+import com.river.leader.core.common.controller.BaseController;
+import com.river.leader.core.utils.HttpSessionContext;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.stereotype.Component;
+
+/**
+ * 静态调用session的拦截器
+ */
+@Aspect
+@Component
+public class SessionHolderInterceptor extends BaseController {
+
+    @Pointcut("execution(* com.river.leader.*..controller.*.*(..))")
+    public void cutService() {
+    }
+
+    @Around("cutService()")
+    public Object sessionKit(ProceedingJoinPoint point) throws Throwable {
+        HttpSessionContext.put(super.getHttpServletRequest().getSession());
+        try {
+            return point.proceed();
+        } finally {
+            HttpSessionContext.remove();
+        }
+    }
+}

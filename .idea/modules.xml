@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/river-leader/river-leader.iml" filepath="$PROJECT_DIR$/river-leader/river-leader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/river-master.iml" filepath="$PROJECT_DIR$/river-master.iml" />
+    </modules>
+  </component>
+</project>

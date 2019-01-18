@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.leader.modular.system.dao.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.river.leader.modular.system.model.SysUser">
+		<id column="id" property="id" />
+		<result column="userAccout" property="userAccout" />
+		<result column="username" property="username" />
+		<result column="UserPassword" property="password" />
+		<result column="userStatus" property="userStatus" />
+		<result column="email" property="email" />
+		<result column="lastLoginTime" property="lastLoginTime" />
+
+		<result column="isDeleted" property="isDeleted"/>
+		<result column="deletionTime" property="deletionTime"/>
+		<result column="deleterUserId" property="deleterUserId"/>
+
+		<result column="creationTime" property="creationTime"/>
+		<result column="lastModificationTime" property="lastModificationTime"/>
+		<result column="creatorUserId" property="creatorUserId"/>
+		<result column="lastModifierUserId" property="lastModifierUserId"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, userAccout,username,userStatus,email,lastLoginTime,remarks
+	</sql>
+
+	<sql id="Base_Column_List_With_Pwd">
+		id, userAccout,username,userStatus,UserPassword as password,email,lastLoginTime,remarks
+	</sql>
+
+	<select id="selectUsers" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_userinfo
+		where isDeleted = 0
+		<if test="name != null and name != ''">
+			and (userAccout like CONCAT('%',#{name},'%') or username like CONCAT('%',#{name},'%'))
+		</if>
+		<!--<if test="deptid != null and deptid != 0">
+			and (deptid = #{deptid} or deptid in ( select id from sys_dept where pids like CONCAT('%[', #{deptid}, ']%') ))
+		</if>-->
+		<if test="beginTime != null and beginTime != '' and endTime != null and endTime != ''">
+			and (creationTime between CONCAT(#{beginTime},' 00:00:00') and CONCAT(#{endTime},' 23:59:59'))
+		</if>
+	</select>
+
+	<update id="setStatus">
+		update sys_userinfo set userStatus = #{status},isDeleted=1 where id = #{userId}
+	</update>
+
+	<update id="changePwd">
+		update sys_userinfo set password = #{pwd} where id = #{userId}
+	</update>
+
+	<update id="setRoles">
+		update sys_userinfo set roleid = #{roleIds} where id =
+		#{userId}
+	</update>
+
+	<select id="getByAccount" resultType="SysUser">
+		select
+		<include refid="Base_Column_List_With_Pwd" />
+		from sys_userinfo where userAccout = #{account}
+	</select>
+
+</mapper>

@@ -1,0 +1,74 @@
+server:
+  port: 8888
+
+smartcloud:
+  swagger-open: true              #是否开启swagger (true/false)
+  kaptcha-open: false             #是否开启登录时验证码 (true/false)
+  #  file-upload-path: d:/tmp     #文件上传目录(不配置的话为java.io.tmpdir目录)
+  spring-session-open: false      #是否开启spring session,如果是多机环境需要开启(true/false)
+  session-invalidate-time: 1800     #session失效时间(只在单机环境下生效，多机环境在SpringSessionConfig类中配置) 单位：秒
+  session-validation-interval: 900  #多久检测一次失效的session(只在单机环境下生效) 单位：秒
+
+beetl:
+  resource-auto-check: true       #热加载beetl模板，开发时候用
+
+spring:
+  profiles:
+    active: @profileActive@
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
+#    default-property-inclusion: non_null
+  mvc:
+    throw-exception-if-no-handler-found: true #出现错误时, 直接抛出异常(便于异常统一处理，否则捕获不到404)
+    static-path-pattern: /static/**
+    view:
+      prefix: /WEB-INF/view
+  resources:
+    add-mappings: false #不要为我们工程中的资源文件建立映射
+  devtools:
+    restart:
+      enabled: false
+      additional-paths: src/main/java
+      exclude: static/**,WEB-INF/view/**
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+mybatis-plus:
+  mapper-locations: classpath*:com/river/leader/modular/system/dao/mapping/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.river.leader.core.model.common;com.river.leader.modular.system.model
+  #typeEnumsPackage: com.baomidou.springboot.entity.enums
+  global-config:
+    #db-config:
+      #table-underline: false
+      #数据库相关配置
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      #id-type: id_worker
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      #field-strategy: not_empty
+      #驼峰下划线转换
+      #column-underline: false
+      #数据库大写下划线转换
+      #capital-mode: false
+      #逻辑删除配置
+      #logic-delete-value: 0
+      #logic-not-delete-value: 1
+      #db-type: h2
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: false
+    cache-enabled: false
+
+jwt:
+  secret: smartcloud_C421AAEE0D114E9C
+  issuer: smartcloud
+  audience: everone
+  expiration: 82800
+
+log:
+  path: riverleader-logs

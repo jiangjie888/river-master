@@ -1,0 +1,14 @@
+spring:
+  profiles: dev
+  muti-datasource: false
+  datasource:
+    infra-db:
+      url: jdbc:mysql://172.16.4.112:3306/smartcloud_infra?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT
+      username: root
+      password: zyjs123ZYJS
+      filters: wall,mergeStat
+    river-db:
+      url: jdbc:mysql://172.16.4.112:3306/?smartcloud_riverleader&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=GMT
+      username: root
+      password: zyjs123ZYJS
+      dataSourceNames:

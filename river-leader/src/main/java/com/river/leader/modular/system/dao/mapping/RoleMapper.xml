@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.leader.modular.system.dao.RoleMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.river.leader.modular.system.model.SysRole">
+		<id column="id" property="id" />
+		<result column="roleName" property="roleName" />
+		<result column="roleCode" property="roleCode" />
+		<result column="isDefaultRole" property="isDefaultRole" />
+		<result column="roleDescription" property="roleDescription" />
+
+		<result column="isDeleted" property="isDeleted"/>
+		<result column="deletionTime" property="deletionTime"/>
+		<result column="deleterUserId" property="deleterUserId"/>
+
+		<result column="creationTime" property="creationTime"/>
+		<result column="lastModificationTime" property="lastModificationTime"/>
+		<result column="creatorUserId" property="creatorUserId"/>
+		<result column="lastModifierUserId" property="lastModifierUserId"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, roleCode,roleName, isDefaultRole, roleDescription
+	</sql>
+
+	<select id="selectRoles" resultType="map">
+		select
+		<include refid="Base_Column_List" />
+		from sys_roleinfo
+		<if test="condition != null">
+			where roleName like CONCAT('%',#{condition},'%')
+		</if>
+	</select>
+
+	<select id="selectRolesByUserid" resultType="map">
+		select r.id, r.roleCode,r.roleName,r.isDefaultRole,r.roleDescription
+		from sys_userinforole a,sys_roleinfo r
+		<if test="userId != null">
+			where a.userid = #{userId} and r.id=a.roleid
+		</if>
+	</select>
+
+	<delete id="delRoleById">
+		delete from sys_roleinfo where id = #{roleId}
+	</delete>
+
+</mapper>
